@@ -32,7 +32,8 @@ int diff(struct updatingValue* uV)
     return uV->cur - uV->prev;
 }
 
-enum mode {
+enum mode
+{
   MODE_DEFAULT,
   MODE_RAINBOW,
   MODE_AUDIO,
@@ -116,12 +117,12 @@ Adafruit_BME680 bme;
 Adafruit_NeoPixel neo_grbw_strip(NUM_NEO_GRBW, NEO_GRBW_PIN, NEO_GRBW + NEO_KHZ800);
 Adafruit_NeoPixel neo_grb_strip(NUM_NEO_GRB, NEO_GRB_PIN, NEO_GRB + NEO_KHZ800);
 
+
 /*
  * 
  * Inputy things
  * 
  */
-
 
 void update_baseline(uint32_t reading)
 {
@@ -272,21 +273,28 @@ bool update_knob()
 
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
-uint32_t neo_grb_wheel(byte WheelPos) {
+uint32_t neo_grb_wheel(byte WheelPos)
+{
   WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
+  if(WheelPos < 85)
+  {
    return neo_grb_strip.Color(255 - WheelPos * 3, 0, WheelPos * 3, 0);
-  } else if(WheelPos < 170) {
+  }
+  else if(WheelPos < 170)
+  {
     WheelPos -= 85;
    return neo_grb_strip.Color(0, WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else {
+  }
+  else
+  {
    WheelPos -= 170;
    return neo_grb_strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0, 0);
   }
 }
 
 // applies brightness to a strip.Color
-uint32_t getColor(uint32_t c) {
+uint32_t getColor(uint32_t c)
+{
   uint16_t r, g, b, w;
   w = 0 >> 24 & 0xFF;
   r = c >> 16 & 0xFF;
@@ -299,21 +307,22 @@ uint32_t getColor(uint32_t c) {
   return neo_grbw_strip.Color(r, g, b, w);
 }
 
-
-void rainbowCycle() {
+void rainbowCycle()
+{
   digitalWrite(AMP_DS_PIN, LOW);
   setPixel(rainbow_pixel, getColor(neo_grb_wheel(((rainbow_pixel * 256 / num_pixels) + rainbow_pos) & 255)));
   rainbow_pixel += 1;
-  if (rainbow_pixel >= num_pixels) {
+  if (rainbow_pixel >= num_pixels)
+  {
     rainbow_pixel = 0;
     rainbow_pos += 1;
-    if (rainbow_pos >= 256*5) {
+    if (rainbow_pos >= 256*5)
+    {
       rainbow_pos = 0;
     }
     show_strips();
   }
 }
-
 
 void setPixel(uint16_t pixel, uint8_t red, uint8_t green, uint8_t blue)
 {
@@ -515,7 +524,8 @@ void post()
  * 
  */
 
-void powerOn() {
+void powerOn()
+{
   // qdec copypasta
   qdec.begin();
   pinMode(KNOB_A_PIN, INPUT_PULLUP);
@@ -542,10 +552,10 @@ void powerOn() {
   bme.setGasHeater(320, 150); // 320*C for 150 ms
   bme_reading_end_time_ms = bme.beginReading();
   // adafruit copypasta
-
 }
 
-void setup() {
+void setup()
+{
   powerOn();
 
   db.init(KNOB_SWITCH_PIN);
@@ -569,7 +579,8 @@ void setup() {
   memset(pressure_history, 0, sizeof(*pressure_history) * PRESSURE_HISTORY_DEPTH);
 }
 
-void loop() {
+void loop()
+{
   bool knob_changed;
 
   update_pressure();
@@ -579,5 +590,4 @@ void loop() {
   update_lights();
 
   knob_changed = update_knob() || knob_changed;
-  
 }
