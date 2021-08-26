@@ -560,11 +560,10 @@ void setup()
 
   db.init(KNOB_SWITCH_PIN);
 
-  // A weird struct that holds both the current and previous values.
+  // A little struct that holds both the current and previous values.
   knob_pos = {0, 0};
   knob_clicks = {0, 0};
   
-  // brightness is not really implemented
   brightness = 255;
   neo_grbw_brightness = 255;
   neo_grb_brightness = 255;
@@ -581,13 +580,8 @@ void setup()
 
 void loop()
 {
-  bool knob_changed;
-
   update_pressure();
-
-  knob_changed = update_knob_switch();
-
+  update_knob_switch();
+  update_knob();
   update_lights();
-
-  knob_changed = update_knob() || knob_changed;
 }
