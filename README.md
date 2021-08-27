@@ -2,6 +2,8 @@
 
 Arduino code for my DEF CON 29 mask project.
 
+https://ninetypercentfinished.com/def-con-29-mask
+
 ## Dependencies
 
 Libraries you can find in the Arduino library manager:
